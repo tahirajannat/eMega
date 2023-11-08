@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Hero from './components/Hero';
+import SmallerBanner from './components/common/SmallerBanner';
 import Header from './components/header/Header';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             </p> */}
             <Header />
             <Hero />
+            <SmallerBanner />
         </>
     );
 }
