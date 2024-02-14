@@ -2,11 +2,13 @@ import React from 'react';
 import { FaBagShopping } from 'react-icons/fa6';
 import HeroProduct from '../../assets/image-product.png';
 import Button from './Button';
+import BannerPattern from '../../assets/flower-pattern.png'
 
 export default function HeroBanner() {
     return (
-        <div>
-            <div className='container mx-auto px-20 grid grid-cols-12'>
+        <div className='object-cover bg-no-repeat w-full bg-contain h-full bg-center'  style={{ backgroundImage: `url(${BannerPattern})` }}>
+
+            <div className='container mx-auto px-20 pb-20 grid grid-cols-12'>
                 <div className='col-span-6 text-center flex items-center rounded-sm  lg:text-left'>
                     <div>
                         <h1 className='text-[50px] font-extralight text-black mb-8'>

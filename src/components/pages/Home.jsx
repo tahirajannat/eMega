@@ -9,10 +9,7 @@ import HeaderTop from '../header/HeaderTop';
 export default function Home() {
     return (
         <>
-            <div
-                className=' object-cover bg-no-repeat w-full bg-cover h-auto bg-center '
-                style={{ backgroundImage: `url(${BannerPattern})` }}
-            >
+            <div >
                 <HeaderTop />
                 <HeaderBottom />
                 <HeroBanner />
