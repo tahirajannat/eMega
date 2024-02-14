@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Hero from './components/Hero';
-import SmallerBanner from './components/common/SmallerBanner';
-import Header from './components/header/Header';
+import Home from './components/pages/Home';
 
 function App() {
     const [count, setCount] = useState(0);
@@ -20,9 +19,11 @@ function App() {
             <p className='read-the-docs'>
                 Click on the Vite and React logos to learn more
             </p> */}
-            <Header />
+            {/* <Header />
             <Hero />
-            <SmallerBanner />
+            <SmallerBanner /> */}
+            <Home />
+            <Hero />
         </>
     );
 }
