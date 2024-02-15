@@ -34,7 +34,7 @@ export default function Brands() {
         },
     ];
     return (
-        <div className='container px-20 mx-auto '>
+        <div className='container px-20 mx-auto my-10'>
             <div className='grid grid-cols-5 items-center justify-start gap-10 py-10'>
                 {brands.map((brand) => (
                     <img
