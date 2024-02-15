@@ -100,7 +100,7 @@ export default function NewArival() {
 
             <Tabs active={active} onChange={handleChange}>
                 <Tab title='All Product'>
-                    <div className='grid grid-cols-4 gap-10 my-10'>
+                    <div className='grid grid-cols-4 gap-10 '>
                         <ProductCard items={popularProducts} />
                     </div>
                 </Tab>

@@ -41,7 +41,6 @@ export default function Brands() {
                         key={brand.id}
                         src={brand.name}
                         alt=''
-                        srcset=''
                         className='object-fit w-40'
                     />
                 ))}

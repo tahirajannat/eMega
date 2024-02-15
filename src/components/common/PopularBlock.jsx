@@ -52,7 +52,7 @@ export default function PopularBlock() {
     ];
     return (
         <div className='container mx-auto px-20 relative my-10'>
-            <div class='absolute transform -rotate-90 transition duration-300 left-12 top-1/2 -translate-x-1/2 '>
+            <div className='absolute transform -rotate-90 transition duration-300 left-12 top-1/2 -translate-x-1/2 '>
                 <h2 className='uppercase text-2xl text-primary'>
                     Explore new and popular styles
                 </h2>
@@ -66,7 +66,6 @@ export default function PopularBlock() {
                                     className='h-full w-full object-cover'
                                     src={product.name}
                                     alt=''
-                                    srcset=''
                                 />
                             </div>
                             {product.ribonTitle && (
@@ -102,7 +101,6 @@ export default function PopularBlock() {
                                     className='h-full w-full object-cover'
                                     src={product.name}
                                     alt=''
-                                    srcset=''
                                 />
                             </div>
                             {product.ribonTitle && (

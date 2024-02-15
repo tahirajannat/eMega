@@ -4,7 +4,10 @@ import HeroBanner from '../common/HeroBanner';
 import PopularBlock from '../common/PopularBlock';
 import HeaderBottom from '../header/HeaderBottom';
 import HeaderTop from '../header/HeaderTop';
+import BestSeller from './section/BestSeller';
+import LeadCollection from './section/LeadCollection';
 import NewArival from './section/NewArival';
+import PromotionalBanner from './section/PromotionalBanner';
 
 export default function Home() {
     return (
@@ -17,6 +20,13 @@ export default function Home() {
             <Brands />
             <PopularBlock />
             <NewArival />
+            <div className='my-40'>
+                <PromotionalBanner />
+            </div>
+            <BestSeller />
+            <div className='my-40'>
+                <LeadCollection />
+            </div>
         </>
     );
 }

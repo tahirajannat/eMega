@@ -11,7 +11,6 @@ export default function ProductCard({ items }) {
                             className='h-full w-full object-cover'
                             src={product.src}
                             alt=''
-                            srcset=''
                         />
 
                         {product.ribonTitle && (
@@ -29,19 +28,19 @@ export default function ProductCard({ items }) {
                             Nike Sportswear Futura Luxe
                         </h2>
                         <div className='flex justify-between items-center '>
-                            <lavel className='text-gray-400 capitalize'>
+                            <label className='text-gray-400 capitalize'>
                                 {product.category}
-                            </lavel>
+                            </label>
 
                             {product.salePrice ? (
-                                <lavel className='text-primary font-normal'>
+                                <label className='text-primary font-normal'>
                                     <del className='mr-3 text-gray-400'>
                                         $220.00
                                     </del>
                                     $130.00
-                                </lavel>
+                                </label>
                             ) : (
-                                <lavel className='font-normal'>$130.00</lavel>
+                                <label className='font-normal'>$130.00</label>
                             )}
                         </div>
                     </div>
