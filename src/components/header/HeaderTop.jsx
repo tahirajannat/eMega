@@ -43,7 +43,7 @@ export default function HeaderTop() {
                 <div className='border-b  md:grid grid-cols-3 items-center py-4 '>
                     <div className=' col-span-1 flex flex-1'>
                         <div className='w-full'>
-                            {/* <label htmlFor='search' className='sr-only'>
+                            {/* <label htmlhtmlFor='search' className='sr-only'>
                             Search
                         </label> */}
                             <div className='relative'>
@@ -70,27 +70,7 @@ export default function HeaderTop() {
                             className=' w-64 h-full object-contain block text-center'
                         />
                     </div>
-                    <div className='text-right'>
-                        <ul
-                            className={`md:flex gap-7 md:items-right justify-end md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
-                                open ? 'top-20 ' : 'top-[-490px]'
-                            }`}
-                        >
-                            {Links.map((link) => (
-                                <li
-                                    key={link.id}
-                                    className='text-base font-medium md:my-0 my-7'
-                                >
-                                    <a
-                                        href={link.link}
-                                        className='text-primary  hover:text-pink-400 duration-500'
-                                    >
-                                        {link.name}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+
                     <div className='text-right'>
                         <ul
                             className={`md:flex gap-7 md:items-right justify-end md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${

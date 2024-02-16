@@ -53,19 +53,6 @@ export default function Home() {
     };
     return (
         <>
-            <div className='bg-gray-300 pt-20'>
-                <form onSubmit={handleSave}>
-                    <label htmlFor=''></label>
-                    <input
-                        type='text'
-                        name=''
-                        id=''
-                        ref={messageRef}
-                        placeholder='enter message'
-                    />
-                    <button type='submit'>submit</button>
-                </form>
-            </div>
             <div className='bg-gray-200'>
                 <HeaderTop />
                 <HeaderBottom />
