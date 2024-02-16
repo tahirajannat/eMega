@@ -1,4 +1,6 @@
-import React from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useRef, useState } from 'react';
+import { firestore } from '../../firebase/index';
 import Brands from '../common/Brands';
 import HeroBanner from '../common/HeroBanner';
 import PopularBlock from '../common/PopularBlock';
@@ -11,8 +13,59 @@ import NewArival from './section/NewArival';
 import PromotionalBanner from './section/PromotionalBanner';
 
 export default function Home() {
+    const messageRef = useRef();
+    const ref = collection(firestore, 'products');
+    const productsRef = collection(firestore, 'products');
+    const [allData, setAllData] = useState([]);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const productData = await getDocs(productsRef);
+                setAllData(
+                    productData.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                console.log(allData); // Log data here
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getData(); // Invoke the function here to fetch data when the component mounts
+    }, []); // Empty dependency array ensures the effect runs only once
+
+    console.log(allData);
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        console.log(messageRef.current.value);
+        let data = {
+            message: messageRef.current.value,
+        };
+        try {
+            addDoc(ref, data);
+        } catch (e) {
+            console.log(e);
+        }
+    };
     return (
         <>
+            <div className='bg-gray-300 pt-20'>
+                <form onSubmit={handleSave}>
+                    <label htmlFor=''></label>
+                    <input
+                        type='text'
+                        name=''
+                        id=''
+                        ref={messageRef}
+                        placeholder='enter message'
+                    />
+                    <button type='submit'>submit</button>
+                </form>
+            </div>
             <div className='bg-gray-200'>
                 <HeaderTop />
                 <HeaderBottom />

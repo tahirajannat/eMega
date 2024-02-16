@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FiUser } from 'react-icons/fi';
 import { HiOutlineHeart, HiOutlineSearch } from 'react-icons/hi';
 import { HiOutlineShoppingCart } from 'react-icons/hi2';
+import { Link } from 'react-router-dom';
 
 import Logo from '../../assets/logo.png';
 
@@ -12,18 +13,21 @@ export default function HeaderTop() {
         // { name: 'Contact Us', link: '/' },
         // { name: 'Blog', link: '/' },
         {
+            id: 1,
             name: <HiOutlineHeart className='text-2xl font-medium ' />,
-            link: '/',
+            link: '',
         },
         {
+            id: 2,
             name: (
                 <HiOutlineShoppingCart className='text-2xl font-medium md:-ml-2' />
             ),
-            link: '/',
+            link: '',
         },
         {
+            id: 3,
             name: <FiUser className='text-[22px] font-medium md:-ml-2' />,
-            link: '/',
+            link: '/my-account',
         },
     ];
     let [open, setOpen] = useState(false);
@@ -74,7 +78,7 @@ export default function HeaderTop() {
                         >
                             {Links.map((link) => (
                                 <li
-                                    key={link.name}
+                                    key={link.id}
                                     className='text-base font-medium md:my-0 my-7'
                                 >
                                     <a
@@ -83,6 +87,27 @@ export default function HeaderTop() {
                                     >
                                         {link.name}
                                     </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className='text-right'>
+                        <ul
+                            className={`md:flex gap-7 md:items-right justify-end md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+                                open ? 'top-20 ' : 'top-[-490px]'
+                            }`}
+                        >
+                            {Links.map((link) => (
+                                <li
+                                    key={link.id}
+                                    className='text-base font-medium md:my-0 my-7'
+                                >
+                                    <Link
+                                        to={link.link} // Use Link instead of a tag for routing
+                                        className='text-primary hover:text-pink-400 duration-500'
+                                    >
+                                        {link.name}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

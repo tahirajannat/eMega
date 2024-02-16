@@ -8,12 +8,12 @@ const Copyright = () => {
         <div className='bg-gray-800 py-2'>
             <div className='container mx-auto px-20 grid grid-cols-3  '>
                 <div className='flex justify-start items-center'>
-                    <p class='text-base text-white'>
+                    <p className='text-base text-white'>
                         &copy; 2024 Pink Lilies , Inc.
                     </p>
                 </div>
                 <div className='flex justify-center items-center'>
-                    <img src={IconPayment} alt='' srcset='' />
+                    <img src={IconPayment} alt='' srcSet='' />
                 </div>
                 <div className='flex justify-end items-center'>
                     <Button

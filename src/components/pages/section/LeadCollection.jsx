@@ -108,6 +108,7 @@ export default function LeadCollection() {
                 <div className='grid grid-cols-6 gap-7'>
                     {popularProducts.slice(0, 6).map((product) => (
                         <img
+                            key={product.id}
                             src={product.src}
                             alt=''
                             className=' h-48 w-full object-cover'

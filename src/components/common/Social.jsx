@@ -8,15 +8,15 @@ const Social = () => {
     return (
         <div>
             {' '}
-            <ul class='mt-8 flex gap-6'>
+            <ul className='mt-8 flex gap-6'>
                 <li>
                     <a
                         href='#'
                         rel='noreferrer'
                         target='_blank'
-                        class='text-primary transition hover:opacity-75'
+                        className='text-primary transition hover:opacity-75'
                     >
-                        <span class='sr-only'>Facebook</span>
+                        <span className='sr-only'>Facebook</span>
 
                         <FaFacebookF className='text-lg' />
                     </a>
@@ -27,9 +27,9 @@ const Social = () => {
                         href='#'
                         rel='noreferrer'
                         target='_blank'
-                        class='text-primary transition hover:opacity-75'
+                        className='text-primary transition hover:opacity-75'
                     >
-                        <span class='sr-only'>Instagram</span>
+                        <span className='sr-only'>Instagram</span>
 
                         <FaInstagram className='text-lg' />
                     </a>
@@ -40,9 +40,9 @@ const Social = () => {
                         href='#'
                         rel='noreferrer'
                         target='_blank'
-                        class='text-primary transition hover:opacity-75'
+                        className='text-primary transition hover:opacity-75'
                     >
-                        <span class='sr-only'>Twitter</span>
+                        <span className='sr-only'>Twitter</span>
                         <FaTwitter className='text-lg' />
                     </a>
                 </li>
@@ -51,9 +51,9 @@ const Social = () => {
                         href='#'
                         rel='noreferrer'
                         target='_blank'
-                        class='text-primary transition hover:opacity-75'
+                        className='text-primary transition hover:opacity-75'
                     >
-                        <span class='sr-only'>Linkedin</span>
+                        <span className='sr-only'>Linkedin</span>
 
                         <FaLinkedinIn className='text-lg' />
                     </a>
@@ -64,9 +64,9 @@ const Social = () => {
                         href='#'
                         rel='noreferrer'
                         target='_blank'
-                        class='text-primary transition hover:opacity-75'
+                        className='text-primary transition hover:opacity-75'
                     >
-                        <span class='sr-only'>GitHub</span>
+                        <span className='sr-only'>GitHub</span>
 
                         <FaGithub className='text-lg' />
                     </a>

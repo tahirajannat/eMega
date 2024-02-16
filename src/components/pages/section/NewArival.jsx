@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useRef, useState } from 'react';
 import Popular1 from '../../../assets/image-product-1.png';
 import Popular2 from '../../../assets/image-product-2.png';
 import Popular3 from '../../../assets/image-product-3.png';
@@ -6,6 +7,7 @@ import Popular4 from '../../../assets/image-product-4.png';
 import ProductCard from '../../common/ProductCard';
 import Tab from '../../common/Tab';
 import Tabs from '../../common/Tabs';
+import { firestore } from '.././../../firebase/index';
 
 export default function NewArival() {
     const popularProducts = [
@@ -88,6 +90,31 @@ export default function NewArival() {
             price: 220,
         },
     ];
+    const messageRef = useRef();
+    const ref = collection(firestore, 'products');
+    const productsRef = collection(firestore, 'products');
+    const [allData, setAllData] = useState([]);
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const productData = await getDocs(productsRef);
+                setAllData(
+                    productData.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                console.log(allData); // Log data here
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getData(); // Invoke the function here to fetch data when the component mounts
+    }, []); // Empty dependency array ensures the effect runs only once
+
+    console.log(allData);
 
     const [active, setActive] = useState(0);
 
@@ -101,7 +128,7 @@ export default function NewArival() {
             <Tabs active={active} onChange={handleChange}>
                 <Tab title='All Product'>
                     <div className='grid grid-cols-4 gap-10 '>
-                        <ProductCard items={popularProducts} />
+                        <ProductCard items={allData} />
                     </div>
                 </Tab>
                 <Tab title='T-Shirts'>hello</Tab>

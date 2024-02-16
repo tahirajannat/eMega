@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../../assets/logo.png';
-import FooterMenu from './FooterMenu';
 import Social from '../common/Social';
+import FooterMenu from './FooterMenu';
 
 export default function FooterTop() {
     const footerMenu = [
@@ -84,20 +84,20 @@ export default function FooterTop() {
 
     return (
         <div>
-            <footer class='bg-white'>
-                <div class=' container mx-auto space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-20'>
-                    <div class='grid grid-cols-1 gap-8 lg:grid-cols-3'>
+            <footer className='bg-white'>
+                <div className=' container mx-auto space-y-8 px-4 py-16 sm:px-6 lg:space-y-16 lg:px-20'>
+                    <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
                         <div>
-                            <div class='text-teal-600'>
+                            <div className='text-teal-600'>
                                 <img
                                     src={Logo}
                                     alt=''
-                                    srcset=''
+                                    srcSet=''
                                     className='w-60'
                                 />
                             </div>
 
-                            <p class='mt-4 max-w-xs text-gray-500'>
+                            <p className='mt-4 max-w-xs text-gray-500'>
                                 Lorem ipsum dolor, sit amet consectetur
                                 adipisicing elit. Esse non cupiditate quae nam
                                 molestias.
@@ -106,7 +106,7 @@ export default function FooterTop() {
                             <Social />
                         </div>
 
-                        <div class='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3'>
+                        <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3'>
                             <FooterMenu menuItems={footerMenu} />
                         </div>
                     </div>
