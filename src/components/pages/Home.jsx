@@ -2,6 +2,7 @@ import React from 'react';
 import Brands from '../common/Brands';
 import HeroBanner from '../common/HeroBanner';
 import PopularBlock from '../common/PopularBlock';
+import Footer from '../footer/Footer';
 import HeaderBottom from '../header/HeaderBottom';
 import HeaderTop from '../header/HeaderTop';
 import BestSeller from './section/BestSeller';
@@ -27,6 +28,7 @@ export default function Home() {
             <div className='my-40'>
                 <LeadCollection />
             </div>
+            <Footer />
         </>
     );
 }

@@ -93,7 +93,7 @@ export default function NewArival() {
 
     const handleChange = (newActive) => setActive(newActive);
     return (
-        <div className='container px-20 mx-auto my-20'>
+        <div className='container px-20 mx-auto my-40'>
             <h2 className='text-center text-4xl font-semibold my-20'>
                 New Arival
             </h2>
