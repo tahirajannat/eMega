@@ -13,11 +13,11 @@ export default function ProductCard({ items }) {
                             alt=''
                         />
 
-                        {product.ribonTitle && (
+                        {product.deal && (
                             <Ribbon
-                                title={product.ribonTitle}
+                                title={product.deal}
                                 backgroundColor={
-                                    product.ribonTitle === 'sale'
+                                    product.deal === 'sale'
                                         ? 'black'
                                         : 'primary'
                                 }

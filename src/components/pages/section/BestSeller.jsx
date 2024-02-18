@@ -17,6 +17,41 @@ import Tabs from '../../common/Tabs';
 // SwiperCore.use([Navigation, Pagination]);
 
 export default function BestSeller() {
+    const products =[
+        {
+            id: 1,
+            title: "Product Name",
+            description: "Product description goes here.",
+            category: "Electronics",
+            brand: "Brand Name",
+            price: 199.99,
+            discountPercentage: 10,
+            stock: 50,
+            image: "product_image.jpg",
+            ratings: {
+              average: 4.5,
+              total: 200
+            },
+            features: [
+              "Feature 1",
+              "Feature 2",
+              "Feature 3"
+            ],
+            shippingInfo: {
+              freeShipping: true,
+              estimatedDelivery: "2-4 business days"
+            },
+            deal: "Sale",
+            status: {
+              bestSeller: true,
+              newArrival: false
+            },
+            createdAt: "2022-01-01T12:00:00Z",
+            updatedAt: "2022-01-10T15:30:00Z"
+          }
+          
+          
+    ]
     const popularProducts = [
         {
             id: 1,
@@ -52,7 +87,7 @@ export default function BestSeller() {
             link: '/',
             category: 'dress',
             totalItems: 10,
-            ribonTitle: 'sale',
+            deal: 'sale',
             price: 220,
             salePrice: 198,
         },
@@ -63,7 +98,7 @@ export default function BestSeller() {
             link: '/',
             category: 'dress',
             totalItems: 10,
-            ribonTitle: 'hot',
+            deal: 'hot',
             price: 130,
         },
         {
@@ -73,7 +108,7 @@ export default function BestSeller() {
             link: '/',
             category: 'scarf',
             totalItems: 10,
-            ribonTitle: 'sale',
+            deal: 'sale',
             price: 220,
             salePrice: 198,
         },
@@ -84,7 +119,7 @@ export default function BestSeller() {
             link: '/',
             category: 'bag',
             totalItems: 10,
-            ribonTitle: 'hot',
+            deal: 'hot',
             price: 120,
         },
         {
@@ -141,11 +176,11 @@ export default function BestSeller() {
                                             alt=''
                                         />
 
-                                        {product.ribonTitle && (
+                                        {product.deal && (
                                             <Ribbon
-                                                title={product.ribonTitle}
+                                                title={product.deal}
                                                 backgroundColor={
-                                                    product.ribonTitle ===
+                                                    product.deal ===
                                                     'sale'
                                                         ? 'black'
                                                         : 'primary'
@@ -212,11 +247,11 @@ export default function BestSeller() {
                                             alt=''
                                         />
 
-                                        {product.ribonTitle && (
+                                        {product.deal && (
                                             <Ribbon
-                                                title={product.ribonTitle}
+                                                title={product.deal}
                                                 backgroundColor={
-                                                    product.ribonTitle ===
+                                                    product.deal ===
                                                     'sale'
                                                         ? 'black'
                                                         : 'primary'
@@ -284,11 +319,11 @@ export default function BestSeller() {
                                             alt=''
                                         />
 
-                                        {product.ribonTitle && (
+                                        {product.deal && (
                                             <Ribbon
-                                                title={product.ribonTitle}
+                                                title={product.deal}
                                                 backgroundColor={
-                                                    product.ribonTitle ===
+                                                    product.deal ===
                                                     'sale'
                                                         ? 'black'
                                                         : 'primary'
