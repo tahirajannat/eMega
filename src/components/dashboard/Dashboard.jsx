@@ -27,7 +27,7 @@ const Dashboard = () => {
     return (
         <>
             <div className=' mx-auto grid grid-cols-12'>
-                <div className='lg:col-span-3 2xl:col-span-2 h-screen bg-gray-300'>
+                <div className='lg:col-span-3 2xl:col-span-2 h-auto bg-gray-800 '>
                     <Sidebar />
                 </div>
                 <div className='lg:col-span-9 2xl:col-span-10 pt-10 bg-gray-50'>

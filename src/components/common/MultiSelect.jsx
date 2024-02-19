@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { HiOutlineChevronUpDown } from 'react-icons/hi2';
 
 function classNames(...classes) {
@@ -9,6 +9,7 @@ export default function MultiSelect({
     multiSelectLabel,
     multiSelectOption,
     onMultiSelect,
+    value,
 }) {
     const [selected, setSelected] = useState([]);
     const [open, setOpen] = useState(false);
@@ -29,10 +30,13 @@ export default function MultiSelect({
         }
     };
 
-    // Call onMultiSelect callback whenever selection changes
+    // Use useCallback to memoize the onMultiSelect function
+    const memoizedOnMultiSelect = useCallback(onMultiSelect, [onMultiSelect]);
+
+    // Call memoizedOnMultiSelect callback whenever selection changes
     useEffect(() => {
-        onMultiSelect(selected);
-    }, [selected, onMultiSelect]);
+        memoizedOnMultiSelect(selected);
+    }, [selected, memoizedOnMultiSelect]);
 
     return (
         <div>
@@ -105,7 +109,7 @@ export default function MultiSelect({
                                 id={`listbox-option-${item.id}`}
                                 role='option'
                                 onClick={() => toggleSelection(item)}
-                                value={item}
+                                value={value}
                             >
                                 <span className='font-normal block truncate'>
                                     {item.name}

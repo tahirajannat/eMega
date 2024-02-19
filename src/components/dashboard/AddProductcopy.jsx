@@ -1,11 +1,10 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaLocationArrow } from 'react-icons/fa6';
 import { v4 as uuid } from 'uuid';
 import { firestore, storage } from '../../firebase/index';
 import Button from '../common/Button';
-import MultiSelect from '../common/MultiSelect';
 const people = [
     { id: 1, name: 'Wade Cooper' },
     { id: 2, name: 'Arlene Mccoy' },
@@ -18,8 +17,9 @@ const people = [
     { id: 9, name: 'Claudie Smitham' },
     { id: 10, name: 'Emil Schaefer' },
 ];
-export default function AddProduct() {
+export default function AddProductCopy() {
     const productsRef = collection(firestore, 'products');
+    const formRef = useRef(null);
 
     const [formData, setFormData] = useState({
         product_name: '',
@@ -30,11 +30,11 @@ export default function AddProduct() {
         manage_stock: '',
         stock_status: '',
         manage_stock: '',
-        categories: [{}],
+        // categories: [],
         featured_image: '',
         short_description: '',
         description: '',
-        reviews: [{}],
+        // reviews: [{}],
         created_at: '',
         updated_at: '',
     });
@@ -42,14 +42,40 @@ export default function AddProduct() {
     const [imageUpload, setImageUpload] = useState(null);
     const [uploadedImageUrl, setUploadedImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const categoriesCollection = collection(firestore, 'categories');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const querySnapshot = await getDocs(categoriesCollection);
+                const fetchedCategories = [];
+
+                querySnapshot.forEach((doc) => {
+                    const categoryData = doc.data();
+                    fetchedCategories.push({
+                        id: doc.id,
+                        name: categoryData.category_name,
+                    });
+                });
+
+                setCategories(fetchedCategories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchData();
+    }, [categoriesCollection]); // Removed 'categories' from the dependency array
 
     const handleChange = (e) => {
+        e.preventDefault();
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        e.target.reset();
+        // e.target.reset();
     };
 
     const handleFileSelect = (event) => {
@@ -67,7 +93,6 @@ export default function AddProduct() {
         const storageRef = ref(storage, 'products/' + uuid());
 
         try {
-            // Upload image
             await uploadBytes(storageRef, imageUpload);
             const imageUrl = await getDownloadURL(storageRef);
             setUploadedImageUrl(imageUrl);
@@ -81,9 +106,9 @@ export default function AddProduct() {
                 stock_quantity: formData.stock_quantity,
                 manage_stock: formData.manage_stock,
                 stock_status: formData.stock_quantity,
-                categories: [{}],
-                featured_image: formData.featured_image,
-                short_description: formData.featured_image,
+                categories: [formData.categories],
+                featured_image: imageUrl,
+                short_description: formData.short_description,
                 description: formData.description,
                 reviews: [{}],
                 created_at: formData.created_at,
@@ -94,6 +119,9 @@ export default function AddProduct() {
             await addDoc(productsRef, newData);
 
             console.log('Product added successfully!');
+            formRef.current.reset();
+            console.log('imageUpload:', imageUpload);
+            console.log('uploadedImageUrl:', uploadedImageUrl);
 
             setFormData({
                 product_name: '',
@@ -104,11 +132,11 @@ export default function AddProduct() {
                 manage_stock: '',
                 stock_status: '',
                 manage_stock: '',
-                categories: [{}],
+                // categories: [],
                 featured_image: '',
                 short_description: '',
                 description: '',
-                reviews: [{}],
+                // reviews: [{}],
                 created_at: '',
                 updated_at: '',
             });
@@ -123,20 +151,21 @@ export default function AddProduct() {
         }
     };
 
-    // console.log('formData', formData);
     const [selectedValues, setSelectedValues] = useState([]);
 
-    // Callback function to handle selected values
-    // Callback function to handle selected values
     const handleMultiSelect = (selected) => {
         setSelectedValues(selected);
-
-        // Assuming 'categories' is a field in your form data
         setFormData((prevData) => ({
             ...prevData,
-            categories: selected.map((item) => item.name), //
+            categories: categories,
         }));
     };
+
+    // useEffect(() => {
+    //     console.log('Selected values:', selectedValues);
+    // }, [selectedValues]);
+
+    // console.log('first formdata values:', formData);
 
     return (
         <div>
@@ -145,7 +174,7 @@ export default function AddProduct() {
                     Add New Product
                 </h1>
 
-                <form className='mt-8'>
+                <form className='mt-8' ref={formRef}>
                     <div className='grid grid-cols-12 gap-12'>
                         <div className='col-span-8'>
                             <div>
@@ -266,7 +295,7 @@ export default function AddProduct() {
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                                         value={formData.stock_status}
                                         onChange={handleChange}
-                                        name='stockStatus' // Corrected name attribute
+                                        name='stock_status' // Corrected name attribute
                                     >
                                         <option value=''>Selcct Stock</option>
                                         <option value='inStock'>
@@ -283,21 +312,21 @@ export default function AddProduct() {
                                 <div className='my-4'>
                                     <label
                                         className='text-black my-6 capitalize'
-                                        htmlFor='stock_status'
+                                        htmlFor='stock_quantity'
                                     >
                                         Stock quantity
                                     </label>
                                     <input
-                                        id='stock_status' // Corrected id attribute
+                                        id='stock_quantity' // Corrected id attribute
                                         type='number'
-                                        name='stock_status'
-                                        value={formData.stock_status}
+                                        name='stock_quantity'
+                                        value={formData.stock_quantity}
                                         onChange={handleChange}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                                     />
                                 </div>
                             )}
-                            <div className='my-4'>
+                            {/* <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
                                     htmlFor='productCategory'
@@ -310,51 +339,26 @@ export default function AddProduct() {
                                     onChange={handleChange}
                                     name='category' // Added name attribute
                                 >
-                                    <option value='Dress'>Dress</option>
-                                    <option value='Shirts'>Shirts</option>
-                                    <option value='Pants'>Pants</option>
-                                    <option value='Jackets'>Jackets</option>
-                                    <option value='Jewelry & Accessories'>
-                                        Jewelry & Accessories
-                                    </option>
-                                    <option value='living'>living</option>
+                                    {categories.map((category) => (
+                                        <option value={category.category_name}>
+                                            {category.category_name}
+                                        </option>
+                                    ))}
                                 </select>
-                            </div>
-                            <div>
-                                {/* Render MultiSelect and pass the callback function */}
+                            </div> */}
+                            {/* <div>
                                 <MultiSelect
                                     multiSelectLabel={'Product Category'}
-                                    multiSelectOption={people}
+                                    multiSelectOption={categories}
+                                    value={formData.categories}
                                     onMultiSelect={handleMultiSelect}
                                 />
 
-                                {/* Display selected values */}
                                 <div>
                                     Selected Values:{' '}
                                     {JSON.stringify(selectedValues)}
                                 </div>
-                            </div>
-
-                            <div className='my-4'>
-                                <label
-                                    className='text-black my-6 capitalize'
-                                    htmlFor='deal'
-                                >
-                                    Deal
-                                </label>
-                                <select
-                                    className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-                                    value={formData.deal}
-                                    onChange={handleChange}
-                                    name='deal' // Added name attribute
-                                >
-                                    <option value='New Arrival'>
-                                        New Arrival
-                                    </option>
-                                    <option value='Sell'>Sell</option>
-                                    <option value='Hot'>Hot</option>
-                                </select>
-                            </div>
+                            </div> */}
 
                             <div className='my-4'>
                                 <label className='block text-sm font-medium text-black'>
@@ -392,7 +396,7 @@ export default function AddProduct() {
 
                                         <div className='flex text-sm text-gray-600'>
                                             <label
-                                                htmlFor='src'
+                                                htmlFor='featured_image'
                                                 className='relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
                                             >
                                                 <span className=''>
