@@ -74,20 +74,6 @@ export default function AddProduct() {
 
             // Save data
             const newData = {
-                // title: formData.title,
-                // description: formData.description,
-                // category: formData.category,
-                // brand: formData.brand,
-                // price: formData.price,
-                // salePrice: formData.salePrice,
-                // discountPercentage: formData.discountPercentage,
-                // stock: formData.stock,
-                // image: formData.imageUrl,
-                // deal: formData.deal,
-                // stockStatus: formData.stockStatus,
-                // createdAt: formData.createdAt,
-                // updatedAt: formData.updatedAt,
-
                 product_name: formData.product_name,
                 slug: formData.slug,
                 regular_price: formData.regular_price,
@@ -108,15 +94,7 @@ export default function AddProduct() {
             await addDoc(productsRef, newData);
 
             console.log('Product added successfully!');
-            // Reset form data
-            // setFormData({
-            //     title: '',
-            //     category: '',
-            //     price: '',
-            //     salePrice: '',
-            //     description: '',
-            //     src: '',
-            // });
+
             setFormData({
                 product_name: '',
                 slug: '',
@@ -144,14 +122,21 @@ export default function AddProduct() {
             setLoading(false);
         }
     };
-    const handleCategoryChange = (selectedCategories) => {
+
+    // console.log('formData', formData);
+    const [selectedValues, setSelectedValues] = useState([]);
+
+    // Callback function to handle selected values
+    // Callback function to handle selected values
+    const handleMultiSelect = (selected) => {
+        setSelectedValues(selected);
+
+        // Assuming 'categories' is a field in your form data
         setFormData((prevData) => ({
             ...prevData,
-            categories: selectedCategories,
+            categories: selected.map((item) => item.name), //
         }));
     };
-
-    console.log('formData', formData);
 
     return (
         <div>
@@ -335,19 +320,19 @@ export default function AddProduct() {
                                     <option value='living'>living</option>
                                 </select>
                             </div>
-                            <div className='my-4'>
-                                <label
-                                    className='text-black my-6 capitalize'
-                                    htmlFor='category'
-                                >
-                                    Product Category
-                                </label>
+                            <div>
+                                {/* Render MultiSelect and pass the callback function */}
                                 <MultiSelect
                                     multiSelectLabel={'Product Category'}
                                     multiSelectOption={people}
-                                    onMultiSelect={handleChange}
-                                    value={formData.category}
+                                    onMultiSelect={handleMultiSelect}
                                 />
+
+                                {/* Display selected values */}
+                                <div>
+                                    Selected Values:{' '}
+                                    {JSON.stringify(selectedValues)}
+                                </div>
                             </div>
 
                             <div className='my-4'>

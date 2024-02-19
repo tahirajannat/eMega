@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiOutlineChevronUpDown } from 'react-icons/hi2';
 
 function classNames(...classes) {
@@ -12,16 +12,27 @@ export default function MultiSelect({
 }) {
     const [selected, setSelected] = useState([]);
     const [open, setOpen] = useState(false);
+
     const handleOpen = () => {
         setOpen((show) => !show);
     };
-    const toggleSelection = (id) => {
-        if (selected.includes(id)) {
-            setSelected(selected.filter((item) => item !== id));
+
+    const toggleSelection = (item) => {
+        if (selected.some((selectedItem) => selectedItem.name === item.name)) {
+            setSelected(
+                selected.filter(
+                    (selectedItem) => selectedItem.name !== item.name
+                )
+            );
         } else {
-            setSelected([...selected, id]);
+            setSelected([...selected, item]);
         }
     };
+
+    // Call onMultiSelect callback whenever selection changes
+    useEffect(() => {
+        onMultiSelect(selected);
+    }, [selected, onMultiSelect]);
 
     return (
         <div>
@@ -36,22 +47,18 @@ export default function MultiSelect({
                     className='relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'
                     onClick={handleOpen}
                 >
-                    {selected.length == 0 && <span> Select Options</span>}
+                    {selected.length === 0 && <span> Select Options</span>}
                     <div className='flex flex-wrap'>
-                        {selected.map((id) => (
+                        {selected.map((item) => (
                             <span
-                                key={id}
+                                key={item.id}
                                 className='inline-flex items-center px-2 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800 mr-1 mb-1'
                             >
-                                {
-                                    multiSelectOption.find(
-                                        (option) => option.id === id
-                                    ).name
-                                }
+                                {item.name}
                                 <button
                                     type='button'
                                     className='ml-1.5 inline-flex text-indigo-500 focus:outline-none focus:text-indigo-700'
-                                    onClick={() => toggleSelection(id)}
+                                    onClick={() => toggleSelection(item)}
                                 >
                                     <span className='sr-only'>
                                         Remove large option
@@ -90,18 +97,23 @@ export default function MultiSelect({
                                 key={item.id}
                                 className={classNames(
                                     'text-gray-900 relative cursor-default select-none py-2 pl-8 pr-4',
-                                    selected.includes(item.id) &&
-                                        'bg-indigo-200'
+                                    selected.some(
+                                        (selectedItem) =>
+                                            selectedItem.id === item.id
+                                    ) && 'bg-indigo-200'
                                 )}
                                 id={`listbox-option-${item.id}`}
                                 role='option'
-                                onClick={() => toggleSelection(item.id)}
+                                onClick={() => toggleSelection(item)}
                                 value={item}
                             >
                                 <span className='font-normal block truncate'>
                                     {item.name}
                                 </span>
-                                {selected.includes(item.id) && (
+                                {selected.some(
+                                    (selectedItem) =>
+                                        selectedItem.id === item.id
+                                ) && (
                                     <span className='text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-1.5'>
                                         <svg
                                             className='h-5 w-5'
