@@ -27,7 +27,7 @@ export default function HeaderTop() {
         {
             id: 3,
             name: <FiUser className='text-[22px] font-medium md:-ml-2' />,
-            link: '/my-account',
+            link: '/dashboard',
         },
     ];
     let [open, setOpen] = useState(false);

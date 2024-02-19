@@ -5,17 +5,38 @@ import { FaLocationArrow } from 'react-icons/fa6';
 import { v4 as uuid } from 'uuid';
 import { firestore, storage } from '../../firebase/index';
 import Button from '../common/Button';
-
+import MultiSelect from '../common/MultiSelect';
+const people = [
+    { id: 1, name: 'Wade Cooper' },
+    { id: 2, name: 'Arlene Mccoy' },
+    { id: 3, name: 'Devon Webb' },
+    { id: 4, name: 'Tom Cook' },
+    { id: 5, name: 'Tanya Fox' },
+    { id: 6, name: 'Hellen Schmidt' },
+    { id: 7, name: 'Caroline Schultz' },
+    { id: 8, name: 'Mason Heaney' },
+    { id: 9, name: 'Claudie Smitham' },
+    { id: 10, name: 'Emil Schaefer' },
+];
 export default function AddProduct() {
     const productsRef = collection(firestore, 'products');
 
     const [formData, setFormData] = useState({
-        title: '',
-        category: '',
-        price: '',
-        salePrice: '',
+        product_name: '',
+        slug: '',
+        regular_price: '',
+        sale_price: '',
+        stock_quantity: '',
+        manage_stock: '',
+        stock_status: '',
+        manage_stock: '',
+        categories: [{}],
+        featured_image: '',
+        short_description: '',
         description: '',
-        src: '',
+        reviews: [{}],
+        created_at: '',
+        updated_at: '',
     });
 
     const [imageUpload, setImageUpload] = useState(null);
@@ -53,19 +74,34 @@ export default function AddProduct() {
 
             // Save data
             const newData = {
-                title: formData.title,
+                // title: formData.title,
+                // description: formData.description,
+                // category: formData.category,
+                // brand: formData.brand,
+                // price: formData.price,
+                // salePrice: formData.salePrice,
+                // discountPercentage: formData.discountPercentage,
+                // stock: formData.stock,
+                // image: formData.imageUrl,
+                // deal: formData.deal,
+                // stockStatus: formData.stockStatus,
+                // createdAt: formData.createdAt,
+                // updatedAt: formData.updatedAt,
+
+                product_name: formData.product_name,
+                slug: formData.slug,
+                regular_price: formData.regular_price,
+                sale_price: formData.sale_price,
+                stock_quantity: formData.stock_quantity,
+                manage_stock: formData.manage_stock,
+                stock_status: formData.stock_quantity,
+                categories: [{}],
+                featured_image: formData.featured_image,
+                short_description: formData.featured_image,
                 description: formData.description,
-                category: formData.category,
-                brand: formData.brand,
-                price: formData.price,
-                salePrice: formData.salePrice,
-                discountPercentage: formData.discountPercentage,
-                stock: formData.stock,
-                image: formData.imageUrl,
-                deal: formData.deal,
-                stockStatus: formData.stockStatus,
-                createdAt: formData.createdAt,
-                updatedAt: formData.updatedAt,
+                reviews: [{}],
+                created_at: formData.created_at,
+                updated_at: formData.updated_at,
             };
             setLoading(true);
             // Save data to the 'products' collection
@@ -82,23 +118,21 @@ export default function AddProduct() {
             //     src: '',
             // });
             setFormData({
-                // id: '',
-                title: '',
+                product_name: '',
+                slug: '',
+                regular_price: '',
+                sale_price: '',
+                stock_quantity: '',
+                manage_stock: '',
+                stock_status: '',
+                manage_stock: '',
+                categories: [{}],
+                featured_image: '',
+                short_description: '',
                 description: '',
-                category: '',
-                brand: '',
-                price: '',
-                discountPercentage: '',
-                stock: '',
-                image: '',
-
-                deal: '',
-                status: {
-                    bestSeller: '',
-                    newArrival: '',
-                },
-                createdAt: '',
-                updatedAt: '',
+                reviews: [{}],
+                created_at: '',
+                updated_at: '',
             });
 
             // Clear the input field for file
@@ -110,6 +144,14 @@ export default function AddProduct() {
             setLoading(false);
         }
     };
+    const handleCategoryChange = (selectedCategories) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            categories: selectedCategories,
+        }));
+    };
+
+    console.log('formData', formData);
 
     return (
         <div>
@@ -118,56 +160,75 @@ export default function AddProduct() {
                     Add New Product
                 </h1>
 
-                <form>
-                    <div>
-                        {/* product title  */}
-                        <div className='my-4'>
-                            <label
-                                className='text-black my-6 capitalize'
-                                htmlFor='productTitle'
-                            >
-                                Product Title
-                            </label>
-                            <input
-                                id='productTitle'
-                                type='text'
-                                name='title'
-                                value={formData.title}
-                                onChange={handleChange}
-                                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-                            />
+                <form className='mt-8'>
+                    <div className='grid grid-cols-12 gap-12'>
+                        <div className='col-span-8'>
+                            <div>
+                                {/* product title  */}
+                                <div className='my-4'>
+                                    <label
+                                        className='text-black my-6 capitalize'
+                                        htmlFor='product_name'
+                                    >
+                                        Product Title
+                                    </label>
+                                    <input
+                                        id='product_name'
+                                        type='text'
+                                        name='product_name'
+                                        value={formData.product_name}
+                                        onChange={handleChange}
+                                        className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
+                                    />
+                                </div>
+                                {/* product description  */}
+                                <div className='my-4'>
+                                    <label
+                                        className='text-black my-6 capitalize'
+                                        htmlFor='description'
+                                    >
+                                        Product Description
+                                    </label>
+                                    <textarea
+                                        id='description'
+                                        name='description'
+                                        value={formData.description}
+                                        onChange={handleChange}
+                                        className='block w-full px-4 py-2 h-96 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
+                                    ></textarea>
+                                </div>
+                                {/* product description  */}
+                                <div className='my-4'>
+                                    <label
+                                        className='text-black my-6 capitalize'
+                                        htmlFor='short_description'
+                                    >
+                                        Product Short Description
+                                    </label>
+                                    <textarea
+                                        id='short_description'
+                                        name='short_description'
+                                        value={formData.short_description}
+                                        onChange={handleChange}
+                                        className='block w-full px-4 py-2 h-52 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
+                                    ></textarea>
+                                </div>
+                            </div>
                         </div>
-                        {/* product description  */}
-                        <div className='my-4'>
-                            <label
-                                className='text-black my-6 capitalize'
-                                htmlFor='productDescription'
-                            >
-                                Product Description
-                            </label>
-                            <textarea
-                                id='productDescription'
-                                name='description'
-                                value={formData.description}
-                                onChange={handleChange}
-                                className='block w-full px-4 py-2 h-40 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-                            ></textarea>
-                        </div>
-                    </div>
-                    <div className='grid grid-cols-5 gap-8'>
-                        <div className='col-span-3'>
+                        <div className=' col-span-4'>
+                            {/* Product Category  */}
                             <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
-                                    htmlFor='productPrice'
+                                    htmlFor='regular_price'
                                 >
                                     Price
                                 </label>
                                 <input
-                                    id='productPrice'
+                                    id='regular_price'
                                     type='number'
-                                    name='price'
-                                    value={formData.price}
+                                    name='regular_price'
+                                    value={formData.regular_price}
                                     onChange={handleChange}
                                     className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                                 />
@@ -175,80 +236,82 @@ export default function AddProduct() {
                             <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
-                                    htmlFor='productSalePrice'
+                                    htmlFor='sale_price'
                                 >
-                                    Sell Price
+                                    Sell Percentage
                                 </label>
                                 <input
-                                    id='productSalePrice'
+                                    id='sale_price'
                                     type='number'
-                                    name='salePrice'
-                                    value={formData.salePrice}
-                                    onChange={handleChange}
-                                    className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-                                />
-                            </div>
-                            {/* //discountPercentage Label */}
-                            <div className='my-4'>
-                                <label
-                                    className='text-black my-6 capitalize'
-                                    htmlFor='discountPercentage'
-                                >
-                                    Discount percentage
-                                </label>
-                                <input
-                                    id='discountPercentage'
-                                    type='number'
-                                    name='discountPercentage'
-                                    value={formData.discountPercentage}
+                                    name='sale_price'
+                                    value={formData.sale_price}
                                     onChange={handleChange}
                                     min={0}
                                     max={100}
                                     className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                                 />
                             </div>
-                            {/* deal  */}
                             <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
-                                    htmlFor='stockStatus'
+                                    htmlFor='manage_stock'
                                 >
-                                    Stock Status
+                                    manage Stock
                                 </label>
                                 <select
                                     className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-                                    value={formData.stockStatus}
+                                    value={formData.manage_stock}
                                     onChange={handleChange}
-                                    name='stockStatus' // Corrected name attribute
+                                    name='manage_stock' // Corrected name attribute
                                 >
                                     <option value=''>Selcct Stock</option>
-                                    <option value='inStock'>In Stock</option>
-                                    <option value='outOfStock'>
-                                        Out of Stock
-                                    </option>
+                                    <option value='yes'>Yes</option>
+                                    <option value='no'>No</option>
                                 </select>
                             </div>
-                            {formData.stockStatus === 'inStock' && (
+                            {formData.manage_stock === 'yes' && (
                                 <div className='my-4'>
                                     <label
                                         className='text-black my-6 capitalize'
-                                        htmlFor='stock'
+                                        htmlFor='stock_status'
                                     >
-                                        In Stock
+                                        Stock Status
+                                    </label>
+                                    <select
+                                        className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
+                                        value={formData.stock_status}
+                                        onChange={handleChange}
+                                        name='stockStatus' // Corrected name attribute
+                                    >
+                                        <option value=''>Selcct Stock</option>
+                                        <option value='inStock'>
+                                            In Stock
+                                        </option>
+                                        <option value='outOfStock'>
+                                            Out of Stock
+                                        </option>
+                                    </select>
+                                </div>
+                            )}
+
+                            {formData.stock_status === 'inStock' && (
+                                <div className='my-4'>
+                                    <label
+                                        className='text-black my-6 capitalize'
+                                        htmlFor='stock_status'
+                                    >
+                                        Stock quantity
                                     </label>
                                     <input
-                                        id='stock' // Corrected id attribute
+                                        id='stock_status' // Corrected id attribute
                                         type='number'
-                                        name='stock'
-                                        value={formData.stock}
+                                        name='stock_status'
+                                        value={formData.stock_status}
                                         onChange={handleChange}
                                         className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                                     />
                                 </div>
                             )}
-                        </div>
-                        <div className=' col-span-2'>
-                            {/* Product Category  */}
                             <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
@@ -272,7 +335,21 @@ export default function AddProduct() {
                                     <option value='living'>living</option>
                                 </select>
                             </div>
-                            {/* deal  */}
+                            <div className='my-4'>
+                                <label
+                                    className='text-black my-6 capitalize'
+                                    htmlFor='category'
+                                >
+                                    Product Category
+                                </label>
+                                <MultiSelect
+                                    multiSelectLabel={'Product Category'}
+                                    multiSelectOption={people}
+                                    onMultiSelect={handleChange}
+                                    value={formData.category}
+                                />
+                            </div>
+
                             <div className='my-4'>
                                 <label
                                     className='text-black my-6 capitalize'
