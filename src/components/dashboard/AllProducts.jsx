@@ -1,8 +1,67 @@
-import React from 'react';
+import { Timestamp, collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { HiTrash } from 'react-icons/hi';
+import { firestore } from '.././../firebase/index';
 
 const AllProducts = () => {
+    const productsRef = collection(firestore, 'products');
+    const [allData, setAllData] = useState([]);
+    // const formattedDates = allData.map((product) => {
+    //     // Convert Firestore timestamp to JavaScript Date
+    //     const jsDate = product.created_at.toDate();
+
+    //     // Format the date using Intl.DateTimeFormat or any other method you prefer
+    //     return new Intl.DateTimeFormat('en-US', {
+    //         year: 'numeric',
+    //         month: 'long',
+    //         day: 'numeric',
+    //         hour: 'numeric',
+    //         minute: 'numeric',
+    //         second: 'numeric',
+    //         timeZoneName: 'short',
+    //     }).format(jsDate);
+    // });
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const productData = await getDocs(productsRef);
+                setAllData(
+                    productData.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                console.log('allData', allData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getData();
+    }, []);
+    const formattedDates = allData.map((product) => {
+        let formattedDate = ''; // Default value if created_at is not a Timestamp
+
+        if (product.created_at instanceof Timestamp) {
+            // Convert Firestore timestamp to JavaScript Date
+            const jsDate = product.created_at.toDate();
+
+            // Format the date using Intl.DateTimeFormat or any other method you prefer
+            formattedDate = new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+            }).format(jsDate);
+        }
+
+        return formattedDate;
+    });
+    console.log('formattedDates', formattedDates);
+
     return (
         <div class='w-full h-screen bg-gray-50 my-10'>
             <div class=' mx-auto sm:px-4 lg:px-8'>
@@ -34,23 +93,6 @@ const AllProducts = () => {
                         <div class='align-middle inline-block w-full shadow overflow-x-auto sm:rounded-lg border-b border-gray-200'>
                             <table class='min-w-full'>
                                 <thead>
-                                    {/* <tr class='border-b border-gray-200 bg-white leading-4 tracking-wider text-base text-gray-900'>
-                                        <th
-                                            class='px-4 py-5 text-left'
-                                            colspan='8'
-                                        >
-                                            <input
-                                                class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
-                                                type='checkbox'
-                                            />
-                                        </th>
-                                        <th class='px-4 py-5 text-left'>
-                                            <input
-                                                class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
-                                                type='checkbox'
-                                            />
-                                        </th>
-                                    </tr> */}
                                     <tr class='bg-gray-50 border-b border-gray-200 text-xs leading-4 text-gray-500 uppercase tracking-wider'>
                                         <th class='px-4 py-3 text-left font-medium'>
                                             <input
@@ -63,6 +105,9 @@ const AllProducts = () => {
                                         </th>
                                         <th class='px-4 py-3 text-left font-medium'>
                                             Price
+                                        </th>
+                                        <th class='px-4 py-3 text-left font-medium'>
+                                            Sale Price
                                         </th>
                                         <th class='px-4 py-3 text-left font-medium'>
                                             Slug
@@ -84,179 +129,105 @@ const AllProducts = () => {
                                 {/* <!-- HEAD end -->
             <!-- BODY start --> */}
                                 <tbody class='bg-white'>
-                                    <tr>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <input
-                                                class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
-                                                type='checkbox'
-                                            />
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-gray-900'>
-                                                name
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-primary'>
-                                                130$
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-blue-600 line-clamp-1'>
-                                                <a
-                                                    href='#'
-                                                    className='hover:underline'
-                                                >
-                                                    https://pink-lilies/product/sloral-scarf
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold text-yellow-800'>
-                                                scarf, women clothing
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-                                                published
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500'>
-                                            created_at
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium'>
-                                            <div className='flex gap-4'>
-                                                <a
-                                                    href='#'
-                                                    class='text-red-600 hover:text-red-900 focus:outline-none focus:underline'
-                                                >
-                                                    <HiTrash />
-                                                </a>
-                                                <a
-                                                    href='#'
-                                                    class='text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline'
-                                                >
-                                                    <FaRegEdit />
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {allData.map((product) => (
+                                        <tr key={product.id}>
+                                            <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <input
+                                                    class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
+                                                    type='checkbox'
+                                                />
+                                            </td>
+                                            <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <div class='text-sm leading-5 text-gray-900'>
+                                                    <a
+                                                        className='text'
+                                                        href='http://'
+                                                        target='_blank'
+                                                        rel='noopener noreferrer'
+                                                    >
+                                                        {product.product_name}
+                                                    </a>
+                                                    <p className='text-[10px] text-gray-500'>
+                                                        ID: {product.id}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <div class='text-sm leading-5 text-primary'>
+                                                    {product.regular_price}
+                                                </div>
+                                            </td>
+                                            <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <div class='text-sm leading-5 text-primary'>
+                                                    {product.sale_price}
+                                                </div>
+                                            </td>
+                                            <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <div class='text-sm leading-5 text-blue-600 line-clamp-1'>
+                                                    <a
+                                                        href='#'
+                                                        className='hover:underline'
+                                                    >
+                                                        https://pink-lilies/product/sloral-scarf
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <span class='px-2 inline-flex text-xs leading-5 font-semibold text-yellow-800'>
+                                                    {product.category}
+                                                </span>
+                                            </td>
+                                            <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
+                                                <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
+                                                    published
+                                                </span>
+                                            </td>
 
-                                    <tr class='bg-gray-100'>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <input
-                                                class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
-                                                type='checkbox'
-                                            />
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-gray-900'>
-                                                name
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-primary'>
-                                                130$
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-blue-600 line-clamp-1'>
-                                                <a
-                                                    href='#'
-                                                    className='hover:underline'
-                                                >
-                                                    https://pink-lilies/product/sloral-scarf
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold text-primary'>
-                                                scarf, women clothing
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800'>
-                                                Inactive
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500'>
-                                            created_at
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium'>
-                                            <div className='flex gap-4'>
-                                                <a
-                                                    href='#'
-                                                    class='text-red-600 hover:text-red-900 focus:outline-none focus:underline'
-                                                >
-                                                    <HiTrash />
-                                                </a>
-                                                <a
-                                                    href='#'
-                                                    class='text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline'
-                                                >
-                                                    <FaRegEdit />
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            <td className='px-4 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500'>
+                                                {product.created_at &&
+                                                product.created_at.seconds &&
+                                                product.created_at.nanoseconds
+                                                    ? new Intl.DateTimeFormat(
+                                                          'en-US',
+                                                          {
+                                                              year: 'numeric',
+                                                              month: 'long',
+                                                              day: 'numeric',
+                                                              hour: 'numeric',
+                                                              minute: 'numeric',
+                                                          }
+                                                      ).format(
+                                                          new Date(
+                                                              product.created_at
+                                                                  .seconds *
+                                                                  1000 +
+                                                                  product
+                                                                      .created_at
+                                                                      .nanoseconds /
+                                                                      1e6
+                                                          )
+                                                      )
+                                                    : 'Invalid Date'}
+                                            </td>
 
-                                    <tr>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <input
-                                                class='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
-                                                type='checkbox'
-                                            />
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-gray-900'>
-                                                name
-                                            </div>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-primary'>
-                                                130$
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <div class='text-sm leading-5 text-blue-600 line-clamp-1'>
-                                                <a
-                                                    href='#'
-                                                    className='hover:underline'
-                                                >
-                                                    https://pink-lilies/product/sloral-scarf
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold  text-green-800'>
-                                                scarf, women clothing
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                            <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800'>
-                                                draft
-                                            </span>
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500'>
-                                            created_at
-                                        </td>
-                                        <td class='px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium'>
-                                            <div className='flex gap-4'>
-                                                <a
-                                                    href='#'
-                                                    class='text-red-600 hover:text-red-900 focus:outline-none focus:underline'
-                                                >
-                                                    <HiTrash />
-                                                </a>
-                                                <a
-                                                    href='#'
-                                                    class='text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline'
-                                                >
-                                                    <FaRegEdit />
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            <td class='px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium'>
+                                                <div className='flex gap-4'>
+                                                    <a
+                                                        href='#'
+                                                        class='text-red-600 hover:text-red-900 focus:outline-none focus:underline'
+                                                    >
+                                                        <HiTrash />
+                                                    </a>
+                                                    <a
+                                                        href='#'
+                                                        class='text-indigo-600 hover:text-indigo-900 focus:outline-none focus:underline'
+                                                    >
+                                                        <FaRegEdit />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

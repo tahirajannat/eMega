@@ -9,15 +9,15 @@ export default function ProductCard({ items }) {
                     <div>
                         <img
                             className='h-full w-full object-cover'
-                            src={product.src}
+                            src={product.featured_image}
                             alt=''
                         />
 
-                        {product.deal && (
+                        {product.badge_label && (
                             <Ribbon
-                                title={product.deal}
+                                title={product.badge_label}
                                 backgroundColor={
-                                    product.deal === 'sale'
+                                    product.badge_label === 'sale'
                                         ? 'black'
                                         : 'primary'
                                 }
@@ -25,22 +25,24 @@ export default function ProductCard({ items }) {
                             />
                         )}
                         <h2 className='text-base capitalize font-semibold py-4 '>
-                            Nike Sportswear Futura Luxe
+                            {product.product_name}
                         </h2>
                         <div className='flex justify-between items-center '>
                             <label className='text-gray-400 capitalize'>
                                 {product.category}
                             </label>
 
-                            {product.salePrice ? (
+                            {product.sale_price ? (
                                 <label className='text-primary font-normal'>
                                     <del className='mr-3 text-gray-400'>
-                                        $220.00
+                                        ${product.sale_price}
                                     </del>
-                                    $130.00
+                                    ${product.regular_price}
                                 </label>
                             ) : (
-                                <label className='font-normal'>$130.00</label>
+                                <label className='font-normal'>
+                                    ${product.regular_price}
+                                </label>
                             )}
                         </div>
                     </div>
