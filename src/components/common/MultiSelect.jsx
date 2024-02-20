@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiOutlineChevronUpDown } from 'react-icons/hi2';
 
 function classNames(...classes) {
@@ -8,7 +8,7 @@ function classNames(...classes) {
 export default function MultiSelect({
     multiSelectLabel,
     multiSelectOption,
-    onMultiSelect,
+    onMultiSelect = () => {},
     value,
 }) {
     const [selected, setSelected] = useState([]);
@@ -30,13 +30,9 @@ export default function MultiSelect({
         }
     };
 
-    // Use useCallback to memoize the onMultiSelect function
-    const memoizedOnMultiSelect = useCallback(onMultiSelect, [onMultiSelect]);
-
-    // Call memoizedOnMultiSelect callback whenever selection changes
     useEffect(() => {
-        memoizedOnMultiSelect(selected);
-    }, [selected, memoizedOnMultiSelect]);
+        onMultiSelect(selected);
+    }, [selected]);
 
     return (
         <div>

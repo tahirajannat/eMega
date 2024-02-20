@@ -90,6 +90,18 @@ export default function NewArival() {
             price: 220,
         },
     ];
+    const people = [
+        { id: 1, name: 'Wade Cooper' },
+        { id: 2, name: 'Arlene Mccoy' },
+        { id: 3, name: 'Devon Webb' },
+        { id: 4, name: 'Tom Cook' },
+        { id: 5, name: 'Tanya Fox' },
+        { id: 6, name: 'Hellen Schmidt' },
+        { id: 7, name: 'Caroline Schultz' },
+        { id: 8, name: 'Mason Heaney' },
+        { id: 9, name: 'Claudie Smitham' },
+        { id: 10, name: 'Emil Schaefer' },
+    ];
     const messageRef = useRef();
     const ref = collection(firestore, 'products');
     const productsRef = collection(firestore, 'products');
@@ -124,6 +136,7 @@ export default function NewArival() {
             <h2 className='text-center text-4xl font-semibold my-20'>
                 New Arival
             </h2>
+            {/* <MultiSelect multiSelectOption={people} /> */}
 
             <Tabs active={active} onChange={handleChange}>
                 <Tab title='All Product'>
@@ -135,6 +148,7 @@ export default function NewArival() {
                         />
                     </div>
                 </Tab>
+
                 <Tab title='T-Shirts'>hello</Tab>
                 <Tab title='Jackets'>hello</Tab>
             </Tabs>

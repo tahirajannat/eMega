@@ -1,19 +1,21 @@
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, getDocs } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useState } from 'react';
 import { FaLocationArrow } from 'react-icons/fa6';
 
+import { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { firestore, storage } from '../../firebase/index';
 import Button from '../common/Button';
+import MultiSelect from '../common/MultiSelect';
 
 export default function AddProduct() {
     const productsRef = collection(firestore, 'products');
-
     const [formData, setFormData] = useState({
         product_name: '',
         product_slug: '',
         category: '',
+        product_brand: '',
         regular_price: '',
         sale_price: '',
         description: '',
@@ -26,10 +28,41 @@ export default function AddProduct() {
         created_at: null,
         updated_at: null,
     });
-
     const [imageUpload, setImageUpload] = useState(null);
     const [uploadedImageUrl, setUploadedImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const categoriesRef = collection(firestore, 'categories');
+    const brandsRef = collection(firestore, 'brands');
+    const [allCategories, setAllCategories] = useState(null);
+    const [allBrands, setAllBrands] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const categoryData = await getDocs(categoriesRef);
+                const brandData = await getDocs(brandsRef);
+                setAllCategories(
+                    categoryData.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                setAllBrands(
+                    brandData.docs.map((doc) => ({
+                        ...doc.data(),
+                        id: doc.id,
+                    }))
+                );
+                console.log('allCategories', allCategories);
+                console.log('allBrands', allBrands);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getData();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,9 +87,9 @@ export default function AddProduct() {
         console.log('slugValue', slugValue);
     };
 
-    const handleFileSelect = (event) => {
-        setImageUpload(event.target.files[0]);
-    };
+    // const handleFileSelect = (event) => {
+    //     setImageUpload(event.target.files[0]);
+    // };
 
     const handleSaveAndUpload = async (e) => {
         e.preventDefault();
@@ -85,9 +118,15 @@ export default function AddProduct() {
             const newData = {
                 product_name: formData.product_name,
                 product_slug: formData.product_slug,
-                category: formData.category,
+                category: selectedCategory.reduce(
+                    (acc, cur) => acc + ', ' + cur.name,
+                    ''
+                ),
+                product_brand: formData.product_brand,
                 regular_price: formData.regular_price,
-                sale_price: formData.sale_price,
+                sale_price:
+                    formData.regular_price -
+                    (formData.regular_price / 100) * formData.sale_price,
                 description: formData.description,
                 short_description: formData.short_description,
                 featured_image: imageUrl,
@@ -95,7 +134,7 @@ export default function AddProduct() {
                 manage_stock: formData.manage_stock,
                 stock_quantity: formData.stock_quantity,
                 badge_label: formData.badge_label,
-                created_at: Timestamp.fromDate(new Date()), // Convert to Firestore Timestamp
+                created_at: Timestamp.fromDate(new Date()),
                 updated_at: currentDate,
             };
             setLoading(true);
@@ -108,6 +147,7 @@ export default function AddProduct() {
                 product_name: '',
                 product_slug: '',
                 category: '',
+                product_brand: '',
                 regular_price: '',
                 sale_price: '',
                 description: '',
@@ -128,6 +168,18 @@ export default function AddProduct() {
         } finally {
             setLoading(false);
         }
+        const numericValue = 0.75; // Replace this with your numeric value
+        // const percentageValue = (formData.regular_price * 100).toFixed(2) + '%';
+
+        console.log(
+            'percentageValue',
+            (formData.regular_price * 100).toFixed(2)
+        ); // Output: "75.00%"
+    };
+
+    const handleMultiSelecetChange = (values) => {
+        setSelectedCategory(values);
+        console.log(values);
     };
 
     return (
@@ -235,16 +287,26 @@ export default function AddProduct() {
                                 className='text-black my-6'
                                 htmlFor='sale_price'
                             >
-                                Sell Price
+                                Sell Percentage
                             </label>
                             <input
                                 id='sale_price'
                                 type='number'
                                 name='sale_price'
                                 value={formData.sale_price}
+                                min={0}
+                                max={100}
                                 onChange={handleChange}
                                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
                             />
+                            <span className='text-xs'>
+                                <span className='text-primary mr-1'>
+                                    Total Sale amount:
+                                </span>
+                                $
+                                {(formData.regular_price / 100) *
+                                    formData.sale_price}
+                            </span>
                         </div>
                         <div className='my-4'>
                             <label
@@ -259,7 +321,7 @@ export default function AddProduct() {
                                 onChange={handleChange}
                                 name='manage_stock'
                             >
-                                <option value=''>Selcct Stock</option>
+                                <option value=''>Select Stock</option>
                                 <option value='yes'>Yes</option>
                                 <option value='no'>No</option>
                             </select>
@@ -278,7 +340,9 @@ export default function AddProduct() {
                                     onChange={handleChange}
                                     name='stock_status' // Corrected name attribute
                                 >
-                                    <option value=''>Selcct Stock</option>
+                                    <option value=''>
+                                        Selcct Stock Status
+                                    </option>
                                     <option value='inStock'>In Stock</option>
                                     <option value='outOfStock'>
                                         Out of Stock
@@ -318,14 +382,53 @@ export default function AddProduct() {
                                 onChange={handleChange}
                                 name='category' // Added name attribute
                             >
-                                <option value='Dress'>Dress</option>
-                                <option value='Shirts'>Shirts</option>
-                                <option value='Pants'>Pants</option>
-                                <option value='Jackets'>Jackets</option>
-                                <option value='Jewelry & Accessories'>
-                                    Jewelry & Accessories
-                                </option>
-                                <option value='living'>living</option>
+                                <option value=''>Select category</option>
+                                {allCategories &&
+                                    allCategories.map((category) => (
+                                        <option
+                                            key={category.id}
+                                            value={category.category_name}
+                                        >
+                                            {category.category_name}
+                                        </option>
+                                    ))}
+                            </select>
+                        </div>
+
+                        {allCategories && (
+                            <MultiSelect
+                                onMultiSelect={handleMultiSelecetChange}
+                                multiSelectOption={allCategories.map(
+                                    (item) => ({
+                                        id: item.id,
+                                        name: item.category_name,
+                                    })
+                                )}
+                            />
+                        )}
+
+                        <div className='my-4'>
+                            <label
+                                className='text-black my-6'
+                                htmlFor='product_brand'
+                            >
+                                Product Brand
+                            </label>
+                            <select
+                                className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white  rounded-md dark:bg-gray-200 dark:text-gray-500 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
+                                value={formData.product_brand}
+                                onChange={handleChange}
+                                name='product_brand' // Added name attribute
+                            >
+                                <option value=''>Select brand</option>
+                                {allBrands.map((brand) => (
+                                    <option
+                                        key={brand.id}
+                                        value={brand.brand_name}
+                                    >
+                                        {brand.brand_name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div className='my-4'>

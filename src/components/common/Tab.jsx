@@ -1,8 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-export default function Tab({title, children}) {
-  return (
-    <div className=''>{children}</div>
-  )
+export default function Tab({ title, children }) {
+    return <div className=''>{children}</div>;
 }
-

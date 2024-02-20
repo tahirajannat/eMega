@@ -2,9 +2,17 @@ import React from 'react';
 import Ribbon from './Ribbon';
 
 export default function ProductCard({ items, startIndx, endIndx }) {
+    const sortedItems = [...items].sort((a, b) => {
+        const dateA = new Date(a.updated_at.replace(/(at|am|pm)/g, '').trim());
+        const dateB = new Date(b.updated_at.replace(/(at|am|pm)/g, '').trim());
+
+        return dateA - dateB;
+    });
+
+    console.log('sortedItems', sortedItems);
     return (
         <>
-            {items.slice(startIndx, endIndx).map((product) => (
+            {sortedItems.slice(startIndx, endIndx).map((product) => (
                 <div key={product.id} className='relative col-span-1 my-4'>
                     <div>
                         <img
@@ -35,9 +43,9 @@ export default function ProductCard({ items, startIndx, endIndx }) {
                             {product.sale_price ? (
                                 <label className='text-primary font-normal'>
                                     <del className='mr-3 text-gray-400'>
-                                        ${product.sale_price}
+                                        ${product.regular_price}
                                     </del>
-                                    ${product.regular_price}
+                                    ${product.sale_price}
                                 </label>
                             ) : (
                                 <label className='font-normal'>
