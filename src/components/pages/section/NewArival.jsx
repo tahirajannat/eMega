@@ -128,7 +128,11 @@ export default function NewArival() {
             <Tabs active={active} onChange={handleChange}>
                 <Tab title='All Product'>
                     <div className='grid grid-cols-4 gap-10 '>
-                        <ProductCard items={allData} />
+                        <ProductCard
+                            items={allData}
+                            startIndx={0}
+                            endIndx={8}
+                        />
                     </div>
                 </Tab>
                 <Tab title='T-Shirts'>hello</Tab>

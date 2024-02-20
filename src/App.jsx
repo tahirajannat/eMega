@@ -13,25 +13,12 @@ function App() {
             <Router>
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    {/* <Route path='/my-account/*' element={<Dashboard />} /> */}
-                    <Route path='/dashboard' element={<Dashboard />} />
-                    {/* <Route path='/' exact component={Dashboard} /> */}
+                    <Route path='/dashboard/*' element={<Dashboard />} />
                     <Route path='/add-product' element={<AddProduct />} />
                     <Route path='/add-category' element={<AddCategory />} />
-                    <Route path='/all-products' component={<AllProducts />} />
-                    <Route
-                        path='/all-Categories'
-                        component={<AllCategories />}
-                    />
-                    {/* <Route path='/all-products' component={Products} />
-                <Route path='/categories' component={Products} />
-                <Route path='/features' component={Features} />
-                <Route path='/download' component={Download} />
-                <Route path='/faq' component={FAQ} /> */}
+                    <Route path='/all-products' element={<AllProducts />} />
+                    <Route path='/all-Categories' element={<AllCategories />} />
                 </Routes>
-            </Router>
-            <Router>
-                <Dashboard />
             </Router>
         </>
     );

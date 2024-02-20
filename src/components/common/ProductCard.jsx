@@ -1,10 +1,10 @@
 import React from 'react';
 import Ribbon from './Ribbon';
 
-export default function ProductCard({ items }) {
+export default function ProductCard({ items, startIndx, endIndx }) {
     return (
         <>
-            {items.map((product) => (
+            {items.slice(startIndx, endIndx).map((product) => (
                 <div key={product.id} className='relative col-span-1 my-4'>
                     <div>
                         <img
