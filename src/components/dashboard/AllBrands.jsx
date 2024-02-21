@@ -29,7 +29,7 @@ export default function AllBrands() {
     const totalData = allData.length;
 
     return (
-        <div class='w-full h-screen bg-gray-50'>
+        <div class='w-full  bg-gray-50'>
             <div class=' mx-auto sm:px-4 lg:px-8'>
                 <div class='flex flex-col'>
                     <div class='mb-4'>

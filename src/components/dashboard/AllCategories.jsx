@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { FaRegEdit } from 'react-icons/fa';
 import { HiTrash } from 'react-icons/hi';
 import { firestore } from '.././../firebase/index';
+import SkeletonLoader from '../common/SkeletonLoader';
 export default function AllCategories() {
     const productsRef = collection(firestore, 'categories');
     const [allData, setAllData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -30,7 +32,7 @@ export default function AllCategories() {
     const totalData = allData.length;
     // console.log('total data: ' + totalData);
     return (
-        <div class='w-full h-screen bg-gray-100'>
+        <div class='w-full  bg-gray-100'>
             <div class=' mx-auto sm:px-4 lg:px-8'>
                 <div class='flex flex-col'>
                     <div class='mb-4'>
@@ -86,8 +88,17 @@ export default function AllCategories() {
                                         </th>
                                     </tr>
                                 </thead>
-                                {/* <!-- HEAD end -->
-            <!-- BODY start --> */}
+                                {loading && (
+                                    <tbody className='px-4'>
+                                        <td
+                                            className='w-full min-w-full px-4'
+                                            rowSpan={9}
+                                            colSpan={9}
+                                        >
+                                            <SkeletonLoader />
+                                        </td>
+                                    </tbody>
+                                )}
                                 <tbody class='bg-white'>
                                     {allData.map((category) => (
                                         <tr>

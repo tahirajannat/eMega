@@ -118,10 +118,7 @@ export default function AddProduct() {
             const newData = {
                 product_name: formData.product_name,
                 product_slug: formData.product_slug,
-                category: selectedCategory.reduce(
-                    (acc, cur) => acc + ', ' + cur.name,
-                    ''
-                ),
+                category: selectedCategory,
                 product_brand: formData.product_brand,
                 regular_price: formData.regular_price,
                 sale_price:
@@ -188,7 +185,6 @@ export default function AddProduct() {
                 <h1 className='text-xl font-bold text-black capitalize dark:text-black my-4'>
                     Add New Product
                 </h1>
-
                 <form className='grid grid-cols-12 gap-12'>
                     <div className='col-span-8'>
                         <div className='my-4'>
@@ -369,7 +365,7 @@ export default function AddProduct() {
                                 />
                             </div>
                         )}
-                        <div className='my-4'>
+                        {/* <div className='my-4'>
                             <label
                                 className='text-black my-6'
                                 htmlFor='productCategory'
@@ -393,7 +389,7 @@ export default function AddProduct() {
                                         </option>
                                     ))}
                             </select>
-                        </div>
+                        </div> */}
 
                         {allCategories && (
                             <MultiSelect
