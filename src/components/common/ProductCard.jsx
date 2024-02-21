@@ -6,7 +6,7 @@ export default function ProductCard({ items, startIndx, endIndx }) {
         const dateA = new Date(a.updated_at.replace(/(at|am|pm)/g, '').trim());
         const dateB = new Date(b.updated_at.replace(/(at|am|pm)/g, '').trim());
 
-        return dateA - dateB;
+        return dateB - dateA;
     });
 
     console.log('sortedItems', sortedItems);
@@ -37,7 +37,7 @@ export default function ProductCard({ items, startIndx, endIndx }) {
                         </h2>
                         <div className='flex justify-between items-center '>
                             <label className='text-gray-400 capitalize'>
-                                {product.category}
+                                {product.category.name}
                             </label>
 
                             {product.sale_price ? (
