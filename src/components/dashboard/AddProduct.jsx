@@ -87,10 +87,6 @@ export default function AddProduct() {
         console.log('slugValue', slugValue);
     };
 
-    // const handleFileSelect = (event) => {
-    //     setImageUpload(event.target.files[0]);
-    // };
-
     const handleSaveAndUpload = async (e) => {
         e.preventDefault();
 
@@ -135,11 +131,9 @@ export default function AddProduct() {
                 updated_at: currentDate,
             };
             setLoading(true);
-            // Save data to the 'products' collection
             await addDoc(productsRef, newData);
 
             console.log('Product added successfully!');
-            // Reset form data
             setFormData({
                 product_name: '',
                 product_slug: '',
@@ -158,20 +152,12 @@ export default function AddProduct() {
                 updated_at: null,
             });
 
-            // Clear the input field for file
             setImageUpload(null);
         } catch (error) {
             console.error('Error uploading image or adding product:', error);
         } finally {
             setLoading(false);
         }
-        const numericValue = 0.75; // Replace this with your numeric value
-        // const percentageValue = (formData.regular_price * 100).toFixed(2) + '%';
-
-        console.log(
-            'percentageValue',
-            (formData.regular_price * 100).toFixed(2)
-        ); // Output: "75.00%"
     };
 
     const handleMultiSelecetChange = (values) => {

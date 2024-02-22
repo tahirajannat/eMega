@@ -179,9 +179,15 @@ const AllProducts = () => {
                                                 </div>
                                             </td>
                                             <td class='px-2 py-4 whitespace-no-wrap border-b border-gray-200'>
-                                                <span class='px-2 inline-flex text-xs leading-5 font-semibold text-yellow-800'>
-                                                    {product.category}
-                                                </span>
+                                                {/* {product.category ? (
+                                                    <span class='px-2 inline-flex text-xs leading-5 font-semibold text-yellow-800'>
+                                                        {product.category}
+                                                    </span>
+                                                ) : (
+                                                    <span class='px-2 inline-flex text-xs leading-5 font-semibold text-yellow-800'>
+                                                        {product.category.name}
+                                                    </span>
+                                                )} */}
                                             </td>
                                             <td class='px-4 py-4 whitespace-no-wrap border-b border-gray-200'>
                                                 <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
