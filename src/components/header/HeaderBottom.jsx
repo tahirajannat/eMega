@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function HeaderBottom() {
     let Links = [
@@ -11,7 +12,7 @@ export default function HeaderBottom() {
         },
         {
             name: 'Clothing & Shoes',
-            link: '/',
+            link: '/single',
         },
         {
             name: 'Home & Living',
@@ -49,12 +50,18 @@ export default function HeaderBottom() {
                             className='flex items-center text-black text-sm font-light '
                         >
                             <span className='mr-2'>{link.icon}</span>
-                            <a
+                            <Link
+                                to={link.link} // Use Link instead of a tag for routing
+                                className='text-black hover:text-gray-900 duration-500'
+                            >
+                                {link.name}
+                            </Link>
+                            {/* <a
                                 href={link.link}
                                 className='text-black hover:text-gray-900 duration-500'
                             >
                                 {link.name}
-                            </a>
+                            </a> */}
                         </li>
                     ))}
                 </ul>
