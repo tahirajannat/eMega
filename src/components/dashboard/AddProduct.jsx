@@ -54,8 +54,6 @@ export default function AddProduct() {
                         id: doc.id,
                     }))
                 );
-                console.log('allCategories', allCategories);
-                console.log('allBrands', allBrands);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -84,14 +82,12 @@ export default function AddProduct() {
             [name]: value,
             ...(slugValue && { product_slug: slugValue }),
         }));
-        console.log('slugValue', slugValue);
     };
 
     const handleSaveAndUpload = async (e) => {
         e.preventDefault();
 
         if (!imageUpload) {
-            console.log('Please select an image');
             return;
         }
 
@@ -118,8 +114,9 @@ export default function AddProduct() {
                 product_brand: formData.product_brand,
                 regular_price: formData.regular_price,
                 sale_price:
+                    formData.sale_price != 0 &&
                     formData.regular_price -
-                    (formData.regular_price / 100) * formData.sale_price,
+                        (formData.regular_price / 100) * formData.sale_price,
                 description: formData.description,
                 short_description: formData.short_description,
                 featured_image: imageUrl,
@@ -162,7 +159,6 @@ export default function AddProduct() {
 
     const handleMultiSelecetChange = (values) => {
         setSelectedCategory(values);
-        console.log(values);
     };
 
     return (

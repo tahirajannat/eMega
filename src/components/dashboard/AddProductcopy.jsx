@@ -120,8 +120,6 @@ export default function AddProductCopy() {
 
             console.log('Product added successfully!');
             formRef.current.reset();
-            console.log('imageUpload:', imageUpload);
-            console.log('uploadedImageUrl:', uploadedImageUrl);
 
             setFormData({
                 product_name: '',

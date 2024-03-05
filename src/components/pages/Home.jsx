@@ -28,7 +28,6 @@ export default function Home() {
                         id: doc.id,
                     }))
                 );
-                console.log(allData); // Log data here
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -37,11 +36,8 @@ export default function Home() {
         getData(); // Invoke the function here to fetch data when the component mounts
     }, []); // Empty dependency array ensures the effect runs only once
 
-    console.log(allData);
-
     const handleSave = async (e) => {
         e.preventDefault();
-        console.log(messageRef.current.value);
         let data = {
             message: messageRef.current.value,
         };

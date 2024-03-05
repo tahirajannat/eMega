@@ -44,8 +44,6 @@ export default function AddCategory() {
             setLoading(true);
             await addDoc(productsRef, newData);
 
-            console.log('Category added successfully!');
-
             setFormData({
                 category_name: '',
                 category_description: '',

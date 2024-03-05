@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Ribbon from './Ribbon';
 
 export default function ProductCard({ items, startIndx, endIndx }) {
@@ -9,7 +10,6 @@ export default function ProductCard({ items, startIndx, endIndx }) {
         return dateB - dateA;
     });
 
-    console.log('sortedItems', sortedItems);
     return (
         <>
             {sortedItems.slice(startIndx, endIndx).map((product) => (
@@ -26,21 +26,28 @@ export default function ProductCard({ items, startIndx, endIndx }) {
                                 title={product.badge_label}
                                 backgroundColor={
                                     product.badge_label === 'sale'
-                                        ? 'black'
-                                        : 'primary'
+                                        ? 'primary'
+                                        : 'black'
                                 }
                                 textColor={'white'}
                             />
                         )}
-                        <h2 className='text-base capitalize font-semibold py-4 '>
-                            {product.product_name}
+                        <h2 className='text-base capitalize font-semibold py-4 hover:underline hover:text-teal-600 transition-all duration-300'>
+                            <Link state={product} to={`/shop/${product.id}`}>
+                                {/* <button className='bg-teal-600 text-white px-2 py-1 text-xs font-bold rounded-[4px] border hover:border-teal-600 hover:bg-slate-100 hover:text-teal-600 hover:shadow-xl focus:outline-none flex transition duration-300'>
+                                    Borrow
+                                </button> */}
+                                {product.product_name}
+                            </Link>
                         </h2>
                         <div className='flex justify-between items-center '>
-                            <label className='text-gray-400 capitalize'>
-                                {product.category.name}
-                            </label>
+                            {product.category.map((cat) => (
+                                <label className='text-gray-400 capitalize'>
+                                    {cat.name}
+                                </label>
+                            ))}
 
-                            {product.sale_price ? (
+                            {product.sale_price && product.sale_price > 0 ? (
                                 <label className='text-primary font-normal'>
                                     <del className='mr-3 text-gray-400'>
                                         ${product.regular_price}

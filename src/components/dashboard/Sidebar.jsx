@@ -14,9 +14,7 @@ export default function Sidebar({ setActiveComponent }) {
     useEffect(() => {
         const pathname = location.pathname;
         setPath(pathname);
-        console.log(pathname);
     }, [location.pathname]);
-    console.log('path', path);
     return (
         <div className='bg-gray-800 '>
             <div className='bg-gray-800 '>

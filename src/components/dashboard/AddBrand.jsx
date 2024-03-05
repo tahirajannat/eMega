@@ -44,8 +44,6 @@ export default function AddBrand() {
             setLoading(true);
             await addDoc(productsRef, newData);
 
-            console.log('Brand added successfully!');
-
             setFormData({
                 brand_name: '',
                 brand_description: '',

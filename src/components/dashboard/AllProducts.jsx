@@ -55,7 +55,6 @@ const AllProducts = () => {
         } finally {
             setLoading(false);
         }
-        console.log('clicked delete');
     };
 
     return (

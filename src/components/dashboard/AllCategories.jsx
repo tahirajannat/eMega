@@ -19,7 +19,6 @@ export default function AllCategories() {
                         id: doc.id,
                     }))
                 );
-                console.log(allData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -9,6 +10,7 @@ import Popular1 from '../../../assets/image-product-1.png';
 import Popular2 from '../../../assets/image-product-2.png';
 import Popular3 from '../../../assets/image-product-3.png';
 import Popular4 from '../../../assets/image-product-4.png';
+import { selectProduct } from '../../../redux/reducers/productSlice';
 import Ribbon from '../../common/Ribbon';
 import Tab from '../../common/Tab';
 import Tabs from '../../common/Tabs';
@@ -17,41 +19,35 @@ import Tabs from '../../common/Tabs';
 // SwiperCore.use([Navigation, Pagination]);
 
 export default function BestSeller() {
-    const products =[
+    const products = [
         {
             id: 1,
-            title: "Product Name",
-            description: "Product description goes here.",
-            category: "Electronics",
-            brand: "Brand Name",
+            title: 'Product Name',
+            description: 'Product description goes here.',
+            category: 'Electronics',
+            brand: 'Brand Name',
             price: 199.99,
             discountPercentage: 10,
             stock: 50,
-            image: "product_image.jpg",
+            image: 'product_image.jpg',
             ratings: {
-              average: 4.5,
-              total: 200
+                average: 4.5,
+                total: 200,
             },
-            features: [
-              "Feature 1",
-              "Feature 2",
-              "Feature 3"
-            ],
+            features: ['Feature 1', 'Feature 2', 'Feature 3'],
             shippingInfo: {
-              freeShipping: true,
-              estimatedDelivery: "2-4 business days"
+                freeShipping: true,
+                estimatedDelivery: '2-4 business days',
             },
-            deal: "Sale",
+            deal: 'Sale',
             status: {
-              bestSeller: true,
-              newArrival: false
+                bestSeller: true,
+                newArrival: false,
             },
-            createdAt: "2022-01-01T12:00:00Z",
-            updatedAt: "2022-01-10T15:30:00Z"
-          }
-          
-          
-    ]
+            createdAt: '2022-01-01T12:00:00Z',
+            updatedAt: '2022-01-10T15:30:00Z',
+        },
+    ];
     const popularProducts = [
         {
             id: 1,
@@ -133,6 +129,11 @@ export default function BestSeller() {
         },
     ];
 
+    const dispatch = useDispatch();
+    const productData = useSelector(selectProduct);
+    const [allProducts, setAllProducts] = useState([productData]);
+    console.log('productData', allProducts.id);
+
     const [active, setActive] = useState(0);
 
     const handleChange = (newActive) => setActive(newActive);
@@ -180,8 +181,7 @@ export default function BestSeller() {
                                             <Ribbon
                                                 title={product.deal}
                                                 backgroundColor={
-                                                    product.deal ===
-                                                    'sale'
+                                                    product.deal === 'sale'
                                                         ? 'black'
                                                         : 'primary'
                                                 }
@@ -251,8 +251,7 @@ export default function BestSeller() {
                                             <Ribbon
                                                 title={product.deal}
                                                 backgroundColor={
-                                                    product.deal ===
-                                                    'sale'
+                                                    product.deal === 'sale'
                                                         ? 'black'
                                                         : 'primary'
                                                 }
@@ -323,8 +322,7 @@ export default function BestSeller() {
                                             <Ribbon
                                                 title={product.deal}
                                                 backgroundColor={
-                                                    product.deal ===
-                                                    'sale'
+                                                    product.deal === 'sale'
                                                         ? 'black'
                                                         : 'primary'
                                                 }

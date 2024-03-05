@@ -17,7 +17,6 @@ export default function AllBrands() {
                         id: doc.id,
                     }))
                 );
-                console.log(allData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -25,7 +24,6 @@ export default function AllBrands() {
 
         getData();
     }, []);
-    console.log(allData);
     const totalData = allData.length;
 
     return (

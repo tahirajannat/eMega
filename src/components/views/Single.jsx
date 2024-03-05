@@ -1,7 +1,16 @@
 // import { Tab } from '@headlessui/react';
 // import { HiMiniStar } from '@heroicons/react/20/solid';
-import { Fragment, useState } from 'react';
+import { getDocs, query } from 'firebase/firestore';
+import { ref } from 'firebase/storage';
+import React, { Fragment, useEffect, useState } from 'react';
 import { HiMiniStar, HiShoppingCart } from 'react-icons/hi2';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import { firestore } from '../../firebase';
+import {
+    selectProduct,
+    updateProductSlice,
+} from '../../redux/reducers/productSlice';
 import { products } from '../../utility/data';
 import Button from '../common/Button';
 import Tab from '../common/Tab';
@@ -99,23 +108,52 @@ function classNames(...classes) {
 }
 
 export default function Single({ items }) {
-    // const productShop = useSelector(selectProductShop);
-    const [books, setBooks] = useState([]);
-    // const { id } = useParams(); // Destructure the id parameter from the URL
-    // const location = useLocation();
-    // const productId = parseInt(id, 10);
+    const dispatch = useDispatch();
+    const productShop = useSelector(selectProduct);
 
-    // console.log('location', item.id);
-    // console.log('id', id);s
+    const { id } = useParams();
+    const location = useLocation();
 
-    // useEffect(() => {
-    //     const selectedBook = productShop.allBooks.find(
-    //         (item) => item.id === productId
-    //     );
-    //     setBooks(selectedBook ? [selectedBook] : []);
-    // }, [productShop.allBooks, productId]);
+    const [singleProduct, setSingleProduct] = useState(null);
 
-    // console.log('id', books);
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                const productData = await getDocs(
+                    query(ref(firestore, 'products'), where('id', '==', id))
+                );
+
+                if (productData.docs.length === 1) {
+                    const singleProduct = {
+                        ...productData.docs[0].data(),
+                        id: productData.docs[0].id,
+                        created_at: productData.docs[0]
+                            .data()
+                            .created_at.toMillis(),
+                    };
+
+                    // Update the Redux store with the single product
+                    dispatch(updateProductSlice({ products: [singleProduct] }));
+
+                    setSingleProduct(singleProduct);
+                } else {
+                    // Handle case where product with the given id is not found
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        getData();
+    }, [dispatch, id]);
+
+    if (!singleProduct) {
+        // You might want to show a loading state or handle no product found
+        return <div>Loading...</div>;
+    }
+
+    console.log('id', id);
+
     const [active, setActive] = useState(0);
 
     const handleChange = (newActive) => setActive(newActive);

@@ -6,6 +6,7 @@ import AllCategories from './components/dashboard/AllCategories';
 import AllProducts from './components/dashboard/AllProducts';
 import Dashboard from './components/dashboard/Dashboard';
 import Home from './components/pages/Home';
+import Archive from './components/views/Archive';
 import Single from './components/views/Single';
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
                     <Route path='/add-category' element={<AddCategory />} />
                     <Route path='/all-products' element={<AllProducts />} />
                     <Route path='/all-Categories' element={<AllCategories />} />
-                    <Route path='/single' element={<Single />} />
+                    <Route path='/shop' element={<Archive />} />
+                    <Route path='/shop/:id' element={<Single />} />
                 </Routes>
             </Router>
 
