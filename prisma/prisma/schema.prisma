@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ProductsCategories {
+  id   String @db.ObjectId
+  name String
+  slug String
+}
+
+type ProductsReviews {
+  author  String
+  comment String
+  id      String @db.ObjectId
+  rating  Float
+}
+
+type ProductsTags {
+  id   String @db.ObjectId
+  name String
+  slug String 
+}
+
+model Products {
+  id                String               @id @default(auto()) @map("_id") @db.ObjectId
+  categories        ProductsCategories[]
+  created_at        DateTime
+  description       String
+  featured_image    String
+  manage_stock      Boolean
+  product_name      String
+  regular_price     Float
+  reviews           ProductsReviews[]
+  sale_price        Float
+  short_description String
+  slug              String
+  stock_quantity    Int
+  stock_status      String
+  tags              ProductsTags[]
+  updated_at        DateTime
+}
+
+model Post {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  slug     String    @unique
+  title    String
+  body     String
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String    @db.ObjectId
+}
+
+model User {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String   @unique
+  name    String?
+  posts   Post[]
+}
